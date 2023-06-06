@@ -9,21 +9,30 @@ from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 class ListAppendCartItemView(generics.ListCreateAPIView):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(user=user)
 
 
 class RetrieveUpdateDestroyCartItemView(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(user=user)
 
 
 class DestroyCartView(APIView):
-    queryset = Cart.objects.all()
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(user__id=user.id)
 
     def delete(self, request):
         user = request.user

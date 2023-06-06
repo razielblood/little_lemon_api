@@ -2,10 +2,11 @@ from rest_framework import serializers
 from cart.models import Cart
 from rest_framework.validators import UniqueTogetherValidator
 from django.contrib.auth.models import User
+from menu.serializers import MenuItemSerializer
 
 
 class CartSerializer(serializers.ModelSerializer):
-    menuitem = serializers.StringRelatedField()
+    menuitem = MenuItemSerializer(read_only=True)
     menuitem_id = serializers.IntegerField(write_only=True)
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
     price = serializers.DecimalField(max_digits=6, decimal_places=2, read_only=True)
@@ -35,4 +36,4 @@ class DestroyCartSerializer(serializers.ModelSerializer):
     user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), default=serializers.CurrentUserDefault())
 
     def destroy(self, validated_data):
-        cart = Cart.objects.filter(user=validated_data.get("user")).delete()
+        Cart.objects.filter(user=validated_data.get("user")).delete()
