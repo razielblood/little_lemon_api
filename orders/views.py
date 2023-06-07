@@ -42,7 +42,6 @@ class ListCreateOrderView(APIView):
             return Response({"message": "The cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
 
         cart_items_deserialized = CartSerializer(cart_items, many=True).data
-        print(f"{cart_items_deserialized=}")
 
         try:
             with transaction.atomic():
@@ -74,7 +73,7 @@ class RetrieveUpdateDestroyOrderView(APIView):
         order = get_object_or_404(Order, id=order_id)
 
         if not (user.is_superuser or user.groups.filter(name="Manager").exists() or user.id == order.user.id):
-            return Response({"error": ""}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "Not Authorized"}, status=status.HTTP_403_FORBIDDEN)
 
         order_items = OrderItem.objects.filter(order=order)
 
