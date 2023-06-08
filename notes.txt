@@ -1,0 +1,7 @@
+admin		pass_admin_123
+customer1	pass_cust_1
+customer2	pass_cust_2
+delivery1	pass_del_1
+delivery2	pass_del_2
+manager1	pass_man_1
+manager2	pass_man_2
