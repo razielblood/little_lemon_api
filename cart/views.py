@@ -5,12 +5,14 @@ from cart.serializers import CartSerializer
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 
 # Create your views here.
 class ListAppendCartItemView(generics.ListCreateAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def get_queryset(self):
         user = self.request.user
@@ -20,6 +22,7 @@ class ListAppendCartItemView(generics.ListCreateAPIView):
 class RetrieveUpdateDestroyCartItemView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def get_queryset(self):
         user = self.request.user
@@ -29,6 +32,7 @@ class RetrieveUpdateDestroyCartItemView(generics.RetrieveUpdateDestroyAPIView):
 class DestroyCartView(APIView):
     serializer_class = CartSerializer
     permission_classes = [IsAuthenticated]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def get_queryset(self):
         user = self.request.user

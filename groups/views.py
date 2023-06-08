@@ -5,12 +5,14 @@ from rest_framework import status
 from rest_framework.response import Response
 from groups.permissions import GroupPermissions
 from rest_framework.views import APIView
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 
 from groups.serializers import AssignedUserSerializer
 
 
 class ManageGroupView(APIView):
     permission_classes = [GroupPermissions]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def post(self, request: HttpRequest, group: str):
         username = request.data["username"]
@@ -35,6 +37,7 @@ class ManageGroupView(APIView):
 
 class RemoveUserFromGroupView(APIView):
     permission_classes = [GroupPermissions]
+    throttle_classes = [AnonRateThrottle, UserRateThrottle]
 
     def delete(self, request: HttpRequest, group, user_id):
         group = group.replace("-", " ").title()
